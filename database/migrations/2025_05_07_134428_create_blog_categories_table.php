@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Munio\Blog\Category;
+use App\Models\Munio\Organization\Organization;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('blog_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('organization_id')->nullable();
+            $table->foreignIdFor(Organization::class)->nullable();
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreignIdFor(Category::class)->nullable();
             $table->timestamps();
         });
     }

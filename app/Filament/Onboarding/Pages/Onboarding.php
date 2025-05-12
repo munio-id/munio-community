@@ -8,6 +8,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Pages\Concerns;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Wizard;
 use Illuminate\Support\Facades\Blade;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Placeholder;
 use App\Models\Munio\Organization\Organization;
+use Exception;
 
 class Onboarding extends Page
 {
@@ -124,25 +126,33 @@ class Onboarding extends Page
 
     public function save()
     {
-        $data = $this->data;
+        try {
+            DB::beginTransaction();
+            $data = $this->data;
 
-        # Create Organization
-        $org = Organization::create([
-            'name' => data_get($data, 'name'),
-            'code' => data_get($data, 'code'),
-            'domain' => data_get($data, 'domain')
-        ]);
+            # Create Organization
+            $org = Organization::create([
+                'name' => data_get($data, 'name'),
+                'code' => data_get($data, 'code'),
+                'domain' => data_get($data, 'domain')
+            ]);
 
-        # Create Superadmin
-        User::create([
-            'organization_id' => $org->id,
-            'name' => data_get($data, 'user_name'),
-            'email' => data_get($data, 'user_email'),
-            'password' => bcrypt(data_get($data, 'user_password')),
-            'is_superuser' => true
-        ]);
+            # Create Superadmin
+            $user = User::create([
+                'name' => data_get($data, 'user_name'),
+                'email' => data_get($data, 'user_email'),
+                'password' => bcrypt(data_get($data, 'user_password')),
+                'is_admin' => true,
+                'is_superuser' => true,
+            ]);
 
+            $user->organizations()->attach($org->id);
 
-        return redirect()->to('/admin');
+            DB::commit();
+            return redirect()->to('/admin');
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }
