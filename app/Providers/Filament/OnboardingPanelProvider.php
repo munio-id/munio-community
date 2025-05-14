@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\OnboardingMiddleware;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -49,6 +50,7 @@ class OnboardingPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                OnboardingMiddleware::class
             ])
             ->defaultThemeMode(ThemeMode::Light);
     }
