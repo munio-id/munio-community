@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
@@ -58,6 +59,14 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             // Tenancy
-            ->tenant(Organization::class, slugAttribute: 'code', ownershipRelationship: 'organization');
+            ->tenant(Organization::class, slugAttribute: 'code', ownershipRelationship: 'organization')
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label("Membership")
+                    ->icon('heroicon-o-user-group'),
+                NavigationGroup::make()
+                    ->label("Blog")
+                    ->icon('heroicon-o-newspaper')
+            ]);
     }
 }
