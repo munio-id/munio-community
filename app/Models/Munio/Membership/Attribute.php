@@ -2,9 +2,10 @@
 
 namespace App\Models\Munio\Membership;
 
-use App\Enums\MemberAttributeTypeEnum;
 use App\Traits\Multitenantable;
+use App\Enums\MemberAttributeTypeEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Attribute extends Model
 {
@@ -41,5 +42,26 @@ class Attribute extends Model
             'is_private' => 'boolean',
             'is_required' => 'boolean',
         ];
+    }
+
+    /**
+     * Relationships
+     */
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(Member::class, table: 'membership_member_attribute')
+            ->withPivot('value');
+    }
+
+    /**
+     * Attributes
+     */
+    public function getPivotValueAttribute()
+    {
+        if ($this->type == MemberAttributeTypeEnum::Dropdown) {
+            return collect($this->options)->pluck('value', 'code')->toArray()[$this->value];
+        } else {
+            return $this->value;
+        }
     }
 }

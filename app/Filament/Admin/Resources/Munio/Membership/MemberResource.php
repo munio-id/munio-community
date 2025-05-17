@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\Munio\Membership\MemberResource\RelationManager
 use App\Models\Munio\Membership\Member;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -95,7 +96,7 @@ class MemberResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\AttributesRelationManager::class
         ];
     }
 
