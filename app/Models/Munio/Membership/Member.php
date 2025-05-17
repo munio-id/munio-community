@@ -29,6 +29,19 @@ class Member extends Model
     ];
 
     /**
+     * Boot
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function (self $model) {
+            if ($model->isDirty('status')) {
+                $model->status_updated_at = now();
+            }
+        });
+    }
+    /**
      * Relationships
      */
     public function attributes(): BelongsToMany
