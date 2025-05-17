@@ -62,6 +62,7 @@ Here are some of the upcoming features and improvements planned for Munio Commun
 - [ ] Community dashboard with member and post statistics
 - [ ] Event management (CRUD)
 - [ ] User management (CRUD)
+- [ ] Organization Setting Page
 
 ### 🚀 Mid-Term Goals
 
