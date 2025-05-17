@@ -16,10 +16,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Organization::class);
             $table->string('fieldname');
-            $table->string('type');
             $table->string('label');
-            $table->longText('options');
-            $table->text('notes');
+            $table->string('type');
+            $table->json('options')->nullable();
+            $table->text('notes')->nullable();
             $table->boolean('is_private')->default(false);
             $table->boolean('is_required')->default(false);
             $table->timestamps();
