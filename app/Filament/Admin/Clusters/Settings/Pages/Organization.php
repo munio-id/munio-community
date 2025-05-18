@@ -105,7 +105,7 @@ class Organization extends Page
         ];
 
         if ($record->isDirty($keysToWatch)) {
-            $this->dispatch('organizationUpdated');
+            $this->dispatch('organizationUpdated', code: data_get($data, 'code'));
         }
 
         $record->save();

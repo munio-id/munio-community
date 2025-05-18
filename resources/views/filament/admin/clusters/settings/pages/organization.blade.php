@@ -7,9 +7,9 @@
     </x-filament-panels::form>
 </x-filament-panels::page>
 <script>
-document.addEventListener('livewire:init', function() {
-    Livewire.on('organizationUpdated', function() {
-        window.location.reload();
+    document.addEventListener('livewire:init', function() {
+        Livewire.on('organizationUpdated', function(param) {
+            window.location.href = `/admin/${param.code}/settings/organization`;
+        });
     });
-});
 </script>
