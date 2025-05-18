@@ -31,6 +31,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'name',
         'email',
         'password',
+        'is_admin',
         'is_superuser'
     ];
 
@@ -55,6 +56,20 @@ class User extends Authenticatable implements FilamentUser, HasTenants
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Boot
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function (self $model) {
+            if ($model->isDirty('status')) {
+                $model->status_updated_at = now();
+            }
+        });
     }
 
     public function canAccessPanel(Panel $panel): bool
