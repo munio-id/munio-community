@@ -45,6 +45,11 @@ class MemberResource extends Resource
                     ->options(MemberStatusEnum::class)
                     ->default(MemberStatusEnum::PENDING->value)
                     ->native(false),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->optionsLimit(10)
             ]);
     }
 
@@ -52,12 +57,6 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('organization_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
@@ -90,7 +89,8 @@ class MemberResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('id', 'desc');
     }
 
     public static function getRelations(): array

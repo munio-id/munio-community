@@ -2,8 +2,10 @@
 
 namespace App\Models\Munio\Membership;
 
+use App\Models\User;
 use App\Traits\Multitenantable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Member extends Model
@@ -48,5 +50,10 @@ class Member extends Model
     {
         return $this->belongsToMany(Attribute::class, table: 'membership_member_attribute')
             ->withPivot('value');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
